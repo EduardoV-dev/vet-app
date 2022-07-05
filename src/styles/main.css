@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        @apply text-gray-900 font-roboto bg-gray-100 mb-10;
+    }
+
+    h1 {
+        @apply capitalize text-5xl  font-bold text-center mt-16;
+    }
+
+    h2 {
+        @apply text-3xl font-bold capitalize;
+    }
+
+    h3 {
+        @apply text-lg font-bold capitalize mt-6;
+    }
+}
+
+.highlight {
+    @apply text-blue-700;
+}
