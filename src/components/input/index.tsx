@@ -21,7 +21,7 @@ const Input = ({ label, ...rest }: IProps): JSX.Element => {
     /* --- ClassNames --- */
 
     const fieldClasses: string =
-        'rounded p-2 border-2 mb-4 focus:border-blue-100';
+        'rounded p-2 border-2 focus:border-blue-100 mt-1';
 
     /* --- Components --- */
 
@@ -37,12 +37,16 @@ const Input = ({ label, ...rest }: IProps): JSX.Element => {
         );
 
     return (
-        <div className="flex flex-col">
-            <label htmlFor={rest.id || ''} className="mb-2 uppercase font-bold">
+        <div className="flex flex-col mb-4">
+            <label htmlFor={rest.id || ''} className="uppercase font-bold">
                 {label}
             </label>
             {Field}
-            <ErrorMessage component="span" name={rest.name} />
+            <ErrorMessage
+                component="span"
+                name={rest.name}
+                className="text-sm text-red-500 mt-1 font-bold"
+            />
         </div>
     );
 };
