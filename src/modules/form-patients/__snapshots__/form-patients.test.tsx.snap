@@ -3,13 +3,15 @@
 exports[`<FormPatients /> Should render correctly with default input values 1`] = `
 <div>
   <section
-    class="grid place-items-center"
+    class="flex flex-col items-center"
+    style="opacity: 0; transform: translate3d(0,50px,0) scale(0);"
   >
     <h2>
       Patients
     </h2>
     <h3>
-      Add patients & 
+      Add patients &
+       
       <span
         class="highlight"
       >
@@ -17,7 +19,7 @@ exports[`<FormPatients /> Should render correctly with default input values 1`] 
       </span>
     </h3>
     <section
-      class="py-8 px-4 shadow-md w-9/12 mx-auto bg-white mt-10"
+      class="py-8 px-4 shadow-md w-9/12 mx-auto bg-white mt-10 "
     >
       <form
         action="#"
@@ -34,7 +36,7 @@ exports[`<FormPatients /> Should render correctly with default input values 1`] 
           <input
             class="rounded p-2 border-2 focus:border-blue-100 mt-1"
             id="petName"
-            name="petName"
+            name="pet_name"
             placeholder="Enter pet's name"
             value=""
           />
@@ -51,7 +53,7 @@ exports[`<FormPatients /> Should render correctly with default input values 1`] 
           <input
             class="rounded p-2 border-2 focus:border-blue-100 mt-1"
             id="ownerName"
-            name="ownerName"
+            name="owner_name"
             placeholder="Enter owner's name"
             value=""
           />
@@ -68,7 +70,7 @@ exports[`<FormPatients /> Should render correctly with default input values 1`] 
           <input
             class="rounded p-2 border-2 focus:border-blue-100 mt-1"
             id="ownerEmail"
-            name="ownerEmail"
+            name="owner_email"
             placeholder="Enter owner's email"
             type="email"
             value=""
@@ -87,7 +89,7 @@ exports[`<FormPatients /> Should render correctly with default input values 1`] 
             class="rounded p-2 border-2 focus:border-blue-100 mt-1"
             data-testid="dischargeDate"
             id="dischargeDate"
-            name="dischargeDate"
+            name="discharge_date"
             type="date"
             value=""
           />

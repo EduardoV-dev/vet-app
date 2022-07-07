@@ -1,10 +1,11 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import FormPatients from '.';
 import { PatientsContext } from '../../context/patients';
 import { IPatient } from '../../types/patients';
+import FormPatients from '.';
 
 describe('<FormPatients />', () => {
-    const savePatients = jest.fn();
+    const savePatient = jest.fn();
+    const editPatient = jest.fn();
 
     let petInput: HTMLElement;
     let ownerNameInput: HTMLElement;
@@ -14,16 +15,47 @@ describe('<FormPatients />', () => {
     let submitButton: HTMLElement;
 
     const formData: IPatient = {
-        petName: 'John',
-        ownerName: 'Doe',
-        ownerEmail: 'john@doe.com',
-        dischargeDate: '2022-07-05',
+        pet_name: 'John',
+        owner_name: 'Doe',
+        owner_email: 'john@doe.com',
+        discharge_date: '2022-07-05',
         symptoms: 'Lorem ipsum dolor sit amet',
+    };
+
+    /**
+     * fills form inputs with the formData
+     */
+    const fillForm = (): void => {
+        fireEvent.change(petInput, {
+            target: { value: formData.pet_name },
+        });
+        fireEvent.change(ownerNameInput, {
+            target: { value: formData.owner_name },
+        });
+        fireEvent.change(ownerEmailInput, {
+            target: { value: formData.owner_email },
+        });
+        fireEvent.change(dischargeDateInput, {
+            target: { value: formData.discharge_date },
+        });
+        fireEvent.change(symptomsInput, {
+            target: { value: formData.symptoms },
+        });
     };
 
     beforeEach(() => {
         render(
-            <PatientsContext.Provider value={{ patients: [], savePatients }}>
+            <PatientsContext.Provider
+                value={{
+                    patients: [],
+                    selectedPatientId: null,
+
+                    savePatient,
+                    selectPatientId: jest.fn(),
+                    deletePatient: jest.fn(),
+                    editPatient,
+                }}
+            >
                 <FormPatients />
             </PatientsContext.Provider>,
         );
@@ -37,14 +69,6 @@ describe('<FormPatients />', () => {
     });
 
     it('Should render correctly with default input values', () => {
-        const { container } = render(
-            <PatientsContext.Provider value={{ patients: [], savePatients }}>
-                <FormPatients />
-            </PatientsContext.Provider>,
-        );
-
-        expect(container).toMatchSnapshot();
-
         expect((petInput as any).value).toBe('');
         expect((ownerNameInput as any).value).toBe('');
         expect((ownerEmailInput as any).value).toBe('');
@@ -54,26 +78,12 @@ describe('<FormPatients />', () => {
     });
 
     it('Should fill the form', async () => {
-        fireEvent.change(petInput, {
-            target: { value: formData.petName },
-        });
-        fireEvent.change(ownerNameInput, {
-            target: { value: formData.ownerName },
-        });
-        fireEvent.change(ownerEmailInput, {
-            target: { value: formData.ownerEmail },
-        });
-        fireEvent.change(dischargeDateInput, {
-            target: { value: formData.dischargeDate },
-        });
-        fireEvent.change(symptomsInput, {
-            target: { value: formData.symptoms },
-        });
+        fillForm();
 
-        expect((petInput as any).value).toBe(formData.petName);
-        expect((ownerNameInput as any).value).toBe(formData.ownerName);
-        expect((ownerEmailInput as any).value).toBe(formData.ownerEmail);
-        expect((dischargeDateInput as any).value).toBe(formData.dischargeDate);
+        expect((petInput as any).value).toBe(formData.pet_name);
+        expect((ownerNameInput as any).value).toBe(formData.owner_name);
+        expect((ownerEmailInput as any).value).toBe(formData.owner_email);
+        expect((dischargeDateInput as any).value).toBe(formData.discharge_date);
         expect((symptomsInput as any).value).toBe(formData.symptoms);
     });
 
@@ -82,30 +92,14 @@ describe('<FormPatients />', () => {
 
         fireEvent.click(submitButton);
 
-        expect(savePatients).not.toHaveBeenCalled();
+        expect(savePatient).not.toHaveBeenCalled();
     });
 
     it('Should submit the form', async () => {
-        fireEvent.change(petInput, {
-            target: { value: formData.petName },
-        });
-        fireEvent.change(ownerNameInput, {
-            target: { value: formData.ownerName },
-        });
-        fireEvent.change(ownerEmailInput, {
-            target: { value: formData.ownerEmail },
-        });
-        fireEvent.change(dischargeDateInput, {
-            target: { value: formData.dischargeDate },
-        });
-        fireEvent.change(symptomsInput, {
-            target: { value: formData.symptoms },
-        });
+        fillForm();
 
         fireEvent.click(submitButton);
 
-        await waitFor(() => {
-            expect(savePatients).toHaveBeenCalledWith(formData);
-        });
+        await waitFor(() => expect(savePatient).toHaveBeenCalledWith(formData));
     });
 });
