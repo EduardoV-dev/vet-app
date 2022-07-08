@@ -2,8 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { PatientsContext } from '../../context/patients';
 import { IPatient } from '../../types/patients';
 import PatientsList from '.';
+import { formatDate } from '../../utils/date';
 
 export const patient: IPatient = {
+    id: 'idforpatient',
     discharge_date: '2022-07-06',
     owner_email: 'johndoe@gmail.com',
     owner_name: 'John doe',
@@ -25,9 +27,13 @@ describe('<PatientsList />', () => {
         render(
             <PatientsContext.Provider
                 value={{
-                    deletePatient: jest.fn(),
-                    savePatient: savePatients,
                     patients: [],
+                    selectedPatientId: null,
+
+                    deletePatient: jest.fn(),
+                    editPatient: jest.fn(),
+                    savePatient: savePatients,
+                    selectPatientId: jest.fn(),
                 }}
             >
                 <PatientsList />
@@ -46,9 +52,13 @@ describe('<PatientsList />', () => {
         render(
             <PatientsContext.Provider
                 value={{
-                    deletePatient: jest.fn(),
-                    savePatient: savePatients,
                     patients,
+                    selectedPatientId: null,
+
+                    deletePatient: jest.fn(),
+                    editPatient: jest.fn(),
+                    savePatient: savePatients,
+                    selectPatientId: jest.fn(),
                 }}
             >
                 <PatientsList />
@@ -61,5 +71,17 @@ describe('<PatientsList />', () => {
         expect(screen.getByRole('heading', { level: 3 }).textContent).not.toBe(
             DEFAULT_SUBTITLE,
         );
+
+        expect(screen.getByText(patient.pet_name)).toBeInTheDocument();
+        expect(screen.getByText(patient.owner_name)).toBeInTheDocument();
+        expect(screen.getByText(patient.owner_email)).toBeInTheDocument();
+        expect(
+            screen.getByText(formatDate(new Date(patient.discharge_date))),
+        ).toBeInTheDocument();
+        expect(screen.getByText(patient.symptoms)).toBeInTheDocument();
+
+        /* Should not render the patient id */
+
+        expect(screen.queryByText(patient.id!)).not.toBeInTheDocument();
     });
 });

@@ -69,26 +69,34 @@ describe('<FormPatients />', () => {
     });
 
     it('Should render correctly with default input values', () => {
-        expect((petInput as any).value).toBe('');
-        expect((ownerNameInput as any).value).toBe('');
-        expect((ownerEmailInput as any).value).toBe('');
-        expect((dischargeDateInput as any).value).toBe('');
-        expect((symptomsInput as any).value).toBe('');
+        expect((petInput as HTMLInputElement).value).toBe('');
+        expect((ownerNameInput as HTMLInputElement).value).toBe('');
+        expect((ownerEmailInput as HTMLInputElement).value).toBe('');
+        expect((dischargeDateInput as HTMLInputElement).value).toBe('');
+        expect((symptomsInput as HTMLTextAreaElement).value).toBe('');
         expect(submitButton).not.toHaveStyle('opacity: 0.8');
     });
 
     it('Should fill the form', async () => {
         fillForm();
 
-        expect((petInput as any).value).toBe(formData.pet_name);
-        expect((ownerNameInput as any).value).toBe(formData.owner_name);
-        expect((ownerEmailInput as any).value).toBe(formData.owner_email);
-        expect((dischargeDateInput as any).value).toBe(formData.discharge_date);
-        expect((symptomsInput as any).value).toBe(formData.symptoms);
+        expect((petInput as HTMLInputElement).value).toBe(formData.pet_name);
+        expect((ownerNameInput as HTMLInputElement).value).toBe(
+            formData.owner_name,
+        );
+        expect((ownerEmailInput as HTMLInputElement).value).toBe(
+            formData.owner_email,
+        );
+        expect((dischargeDateInput as HTMLInputElement).value).toBe(
+            formData.discharge_date,
+        );
+        expect((symptomsInput as HTMLTextAreaElement).value).toBe(
+            formData.symptoms,
+        );
     });
 
     it('Should not submit the form if all the fields are not satisfied', () => {
-        expect((petInput as any).value).toBe('');
+        expect((petInput as HTMLInputElement).value).toBe('');
 
         fireEvent.click(submitButton);
 

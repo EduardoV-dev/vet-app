@@ -47,8 +47,10 @@ const FormPatients = (): JSX.Element => {
         });
 
         toast.promise(resolveAfter3Seconds, {
-            pending: 'Saving patient...',
-            success: 'Patient saved successfully!',
+            pending: `${selectedPatientId ? 'Updating' : 'Saving'} patient...`,
+            success: `Patient ${
+                selectedPatientId ? 'updated' : 'saved'
+            } successfully!`,
         });
     };
 
@@ -70,11 +72,14 @@ const FormPatients = (): JSX.Element => {
                     onSubmit={handleSubmit}
                     {...{ validationSchema }}
                 >
-                    {({ isSubmitting, setFieldValue }) => {
+                    {({ isSubmitting, setFieldValue, resetForm }) => {
                         /* Effect for mapping every field with the patient data that is about to be editted */
 
                         React.useEffect(() => {
-                            if (!selectedPatientId || !selectedPatient) return;
+                            /* Resets form in case patient id is not selected */
+
+                            if (!selectedPatientId || !selectedPatient)
+                                return resetForm();
 
                             const patientKeys: string[] =
                                 Object.keys(selectedPatient);
